@@ -1,0 +1,634 @@
+{
+  "name": "최종",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## TRIGGER \n- 입력 받는 형식\n- \"서울시\" > 드롭다운\n- 볼트 입력 받는 형식 추가"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        112
+      ],
+      "id": "ccefe0a7-54d9-4130-bd89-f35834663014",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "formTitle": "전기차 충전소 조회",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "지역구 입력",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "종로구"
+                  },
+                  {
+                    "option": "중구"
+                  },
+                  {
+                    "option": "용산구"
+                  },
+                  {
+                    "option": "성동구"
+                  },
+                  {
+                    "option": "광진구"
+                  },
+                  {
+                    "option": "동대문구"
+                  },
+                  {
+                    "option": "중랑구"
+                  },
+                  {
+                    "option": "성북구"
+                  },
+                  {
+                    "option": "강북구"
+                  },
+                  {
+                    "option": "도봉구"
+                  },
+                  {
+                    "option": "노원구"
+                  },
+                  {
+                    "option": "은평구"
+                  },
+                  {
+                    "option": "서대문구"
+                  },
+                  {
+                    "option": "마포구"
+                  },
+                  {
+                    "option": "양천구"
+                  },
+                  {
+                    "option": "강서구"
+                  },
+                  {
+                    "option": "구로구"
+                  },
+                  {
+                    "option": "금천구"
+                  },
+                  {
+                    "option": "영등포구"
+                  },
+                  {
+                    "option": "동작구"
+                  },
+                  {
+                    "option": "관악구"
+                  },
+                  {
+                    "option": "서초구"
+                  },
+                  {
+                    "option": "강남구"
+                  },
+                  {
+                    "option": "송파구"
+                  },
+                  {
+                    "option": "강동구"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "이메일주소",
+              "fieldType": "email",
+              "placeholder": "test@gmail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "출력",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "200"
+                  },
+                  {
+                    "option": "100"
+                  },
+                  {
+                    "option": "50"
+                  },
+                  {
+                    "option": "40"
+                  },
+                  {
+                    "option": "14"
+                  },
+                  {
+                    "option": "7"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1888,
+        224
+      ],
+      "id": "c8f85c21-a6c9-47b2-8777-6136402456a1",
+      "name": "On form submission",
+      "webhookId": "25db33ab-fc28-4cb5-8e01-1bc586330da6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cf43b446-f422-4cfc-8f19-0cbba8dd1e90",
+              "leftValue": "={{ $json['군구'] }}",
+              "rightValue": "={{ $('On form submission').item.json['지역구 입력'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1408,
+        256
+      ],
+      "id": "46ecf30b-b4d0-4cbf-9672-0c0a413e6d48",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=http://apis.data.go.kr/B552584/EvCharger/getChargerInfo",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "serviceKey",
+              "value": "jVwm8WYdMpGK4BqfwpN6eZvd0gaG5oJ5HihWrIhNwhaEdvvtLZHVaChaUQh8fO5GaWlRqxFROPnItSiO7/lf+A=="
+            },
+            {
+              "name": "dataType",
+              "value": "JSON"
+            },
+            {
+              "name": "zcode",
+              "value": "={{ $json['시도코드'] }}"
+            },
+            {
+              "name": "zscode",
+              "value": "={{ $json['시군구 코드'] }}"
+            },
+            {
+              "name": "PageNo",
+              "value": "1"
+            },
+            {
+              "name": "numofRows",
+              "value": "10"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1136,
+        208
+      ],
+      "id": "1437ea0c-ae44-435f-8d32-f1dc91fb3f88",
+      "name": "getChargerInfo1"
+    },
+    {
+      "parameters": {
+        "content": "## TASK1\n- 유저가 입력한 지역구 코드와 지역구 DB(구글시트)와 비교해서 일치하는 지역구의 지역코드를 반환한다.",
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        112
+      ],
+      "id": "24539dc3-b558-4132-a985-0c0fc318ee56",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## TASK2\n- zcode : 시도 | zscode : 시군구 를 \n- 해당 API에 집어넣기.",
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        112
+      ],
+      "id": "c3c9d977-033b-433a-99b5-c6e2433d3ea3",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "items.item",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        208
+      ],
+      "id": "113a947f-a7bc-4719-ba02-8bdb5c9783a7",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.stat }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "030244f6-a0d6-42d6-8c15-af6ca37e8021"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "2충전대기(가능)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        192
+      ],
+      "id": "ebe4e72a-7aec-4f58-8d3b-a33f5d969b1e",
+      "name": "충전여부1"
+    },
+    {
+      "parameters": {
+        "content": "## TASK3\n- 메일로 보낼 내용만 전처리. \"충전대기(가능)\" 상태의 충전소만\n- CSV파일 변환하기\n- 볼트 선택한 수치 이상만큼만 추출\n",
+        "height": 208,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        96
+      ],
+      "id": "44def544-cb81-4425-8327-dcf38055dfc0",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kyYSpgWME_mS4enQ-Y5yZwe991Q5aQJnLAocajluiwM",
+          "mode": "list",
+          "cachedResultName": "시군구 코드 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kyYSpgWME_mS4enQ-Y5yZwe991Q5aQJnLAocajluiwM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "시트1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kyYSpgWME_mS4enQ-Y5yZwe991Q5aQJnLAocajluiwM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1600,
+        224
+      ],
+      "id": "fc90d74d-01f4-4b63-91ef-978fa7e6ffd4",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GEGguogK5cyZAgj0",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "dksgusrl04@gmail.com",
+        "subject": "=={{ '📊 전기차 충전소 리포트 (' + new Date().toISOString().slice(0,10) + ' 기준)' }}",
+        "message": "={{ $('HTML2').item.json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        48
+      ],
+      "id": "4fc32929-ace1-4c9a-807a-0706bd84ca71",
+      "name": "Send a message",
+      "webhookId": "401e78b0-74ea-4389-84b9-9151080bb8ca",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "LLYWzqSMnUaTF0Rw",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f09c8049-6553-4aed-b3b6-c23bd6fd8e76",
+              "leftValue": "={{ Number($json.output || 0) }}",
+              "rightValue": "={{ Number($('On form submission').item.json['출력'] || 0) }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -752,
+        208
+      ],
+      "id": "8566398b-b23e-491a-8bb8-d4b1ea8e247b",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.stat }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "030244f6-a0d6-42d6-8c15-af6ca37e8021"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "2충전대기(가능)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        464
+      ],
+      "id": "67c0026f-b3c5-428a-b1f4-f1432348bc30",
+      "name": "충전여부"
+    },
+    {
+      "parameters": {
+        "html": "<!doctype html>\n<html lang=\"ko\">\n  <body style=\"font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,Helvetica,Arial,sans-serif; background:#f6f8fa; padding:24px\">\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:900px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden\">\n      <tr><td style=\"padding:24px\">\n        <div style=\"font-size:18px;font-weight:700;margin-bottom:8px\">📊 일일 리포트 ({{ new Date().toISOString().slice(0,10) }} 기준)</div>\n        <div style=\"font-size:13px;color:#6b7280;margin-bottom:16px\">자동 생성된 HTML 리포트</div>\n\n        <div style=\"overflow:auto\">\n          <table cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;min-width:600px;width:100%\">\n            <thead>\n              <tr>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb\">충전소명</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb\">주소</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb\">상태</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb\">출력(kW)</th>\n              </tr>\n            </thead>\n            <tbody>\n              {{\n                // 입력 아이템 모두\n                (function () {\n                  const arr = $input.all();\n                  if (!arr.length) {\n                    return '<tr><td colspan=\"4\" style=\"padding:12px;color:#6b7280\">표시할 데이터가 없습니다.</td></tr>';\n                  }\n                  return arr.map(function(it){\n                    const j = it.json;\n                    return '<tr>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.statNm  ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.addr    ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.stat    ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.output  ?? '') + '</td>'\n                      + '</tr>';\n                  }).join('');\n                })()\n              }}\n            </tbody>\n          </table>\n        </div>\n      </td></tr>\n    </table>\n  </body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        480
+      ],
+      "id": "9ee12cba-3c61-4035-a6f4-01ec2c2555bc",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "content": "## TASK4\n- html 작성\n- 충전소명, 주소, 상태, 출력\n유(무)료, 갱신시각, 전화번호, 운영기관, 운영시관 전송\n ",
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -16
+      ],
+      "id": "d988bfd3-a696-49a9-a494-467842f4e8ca",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "html": "<!doctype html>\n<html lang=\"ko\">\n  <body style=\"font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,Helvetica,Arial,sans-serif; background:#f6f8fa; padding:24px\">\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:1200px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden\">\n      <tr><td style=\"padding:24px\">\n        <div style=\"font-size:18px;font-weight:700;margin-bottom:8px\">📊 일일 리포트 ({{ new Date().toISOString().slice(0,10) }} 기준)</div>\n        <div style=\"font-size:13px;color:#6b7280;margin-bottom:16px\">자동 생성된 HTML 리포트</div>\n\n        <div style=\"overflow:auto\">\n          <table cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;min-width:900px;width:100%\">\n            <thead>\n              <tr>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:160px\">충전소명</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:260px\">주소</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:120px\">상태</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:80px\">출력(kW)</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:70px\">무료주차</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:160px\">갱신시각</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:100px\">운영기관</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:140px\">이용시간</th>\n                <th style=\"text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;width:140px\">문의전화</th>\n              </tr>\n            </thead>\n            <tbody>\n              {{\n                (function () {\n                  const fmtTS = (ts) => {\n                    if (!ts) return '';\n                    const s = String(ts).padEnd(14,'0');\n                    const y=s.slice(0,4), m=s.slice(4,6), d=s.slice(6,8),\n                          hh=s.slice(8,10), mm=s.slice(10,12), ss=s.slice(12,14);\n                    return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;\n                  };\n\n                  const rows = $input.all();\n                  if (!rows.length) {\n                    return '<tr><td colspan=\"9\" style=\"padding:12px;color:#6b7280\">표시할 데이터가 없습니다.</td></tr>';\n                  }\n\n                  return rows.map((it) => {\n                    const j = it.json || {};\n                    const statText = (j.stat === \"2\") ? \"충전 가능\" : (j.stat ?? \"\");\n                    return '<tr>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9;word-break:keep-all\">' + (j.statNm      ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.addr        ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + statText + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.output      ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.parkingFree ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + fmtTS(j.statUpdDt) + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.bnm         ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.useTime     ?? '') + '</td>'\n                      + '<td style=\"padding:8px;border-bottom:1px solid #f1f5f9\">' + (j.busiCall    ?? '') + '</td>'\n                      + '</tr>';\n                  }).join('');\n                })()\n              }}\n            </tbody>\n          </table>\n        </div>\n      </td></tr>\n    </table>\n  </body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        112
+      ],
+      "id": "4514fc22-418f-49d7-bd6f-66a3730c0d96",
+      "name": "HTML2"
+    },
+    {
+      "parameters": {
+        "content": "## SEND\n\n\n ",
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "499a846a-79b7-4457-ac5c-82706af95e15",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "getChargerInfo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getChargerInfo1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "충전여부1": {
+      "main": [
+        [
+          {
+            "node": "HTML2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "충전여부1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "충전여부",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "충전여부": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "32663334-5c07-46f6-a7da-9fb085837be5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "366e86c3af1e014c509324b82ec3fd39c80c619ccd2b253fbf9d8b085f4543a3"
+  },
+  "id": "N8UdcG3VnPgNxjHg",
+  "tags": []
+}
